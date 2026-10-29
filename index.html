@@ -3,172 +3,224 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="简洁的学生信息管理：查询、新增、编辑、删除及 CSV 导入导出。">
+  <meta name="description" content="学生信息管理：增删改查及 CSV 导入导出。">
   <title>学生信息管理</title>
-  <style>:root{font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif;color:#233345;background:#f5f7fa;font-synthesis:none;font-size:14px;--green:#217462;--border:#e8ecf0}*{box-sizing:border-box}body{margin:0}button,input,select,textarea{font:inherit}button{cursor:pointer}button,input,select,textarea{outline-offset:3px}button:focus-visible{outline:2px solid #217462}button{transition:background .15s,color .15s}.topbar{height:76px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;gap:20px}.brand{display:flex;align-items:center;gap:12px;font-weight:650;font-size:18px;white-space:nowrap}.brand-icon{display:grid;place-items:center;width:38px;height:38px;background:var(--green);color:white;border-radius:11px;font-size:20px}.brand-divider{margin:0 18px;color:#c7cdd3;font-weight:400}.brand-secondary{font-weight:400;font-size:14px;color:#677381}.top-label{font-size:12px;color:#8b95a2}main{max-width:1280px;margin:0 auto;padding:30px 42px 60px}.breadcrumb{font-size:12px;color:#8a95a1;display:flex;gap:14px;margin-bottom:34px}.breadcrumb span{color:#c3cbd3}.page-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:30px}.eyebrow{font-size:10px;letter-spacing:2px;font-weight:650;color:#7c8b92}h1{font-size:30px;font-weight:650;letter-spacing:1px;margin:10px 0 12px}.page-heading p{font-size:13px;color:#89929d;margin:0;letter-spacing:.5px}.button{border:1px solid transparent;border-radius:6px;padding:10px 16px;display:inline-flex;align-items:center;justify-content:center;gap:7px;line-height:20px;white-space:nowrap}.primary{background:var(--green);color:#fff}.primary:hover{background:#185e4f}.secondary{background:#fff;border-color:#dfe5ea;color:#536272}.secondary:hover{background:#f6f8fa}.button span{font-size:19px;line-height:16px}.workspace{border:1px solid var(--border);border-radius:10px;background:#fff;box-shadow:0 3px 14px #20344704;overflow:hidden}.section-heading{display:flex;align-items:center;justify-content:space-between;padding:23px 25px 20px;gap:15px}.section-title{display:flex;gap:11px;align-items:center}.section-title h2{font-size:16px;font-weight:650;margin:0}.small-icon{font-size:21px;color:var(--green)}.count{background:#edf3f1;color:var(--green);font-size:11px;padding:3px 8px;border-radius:5px;font-variant-numeric:tabular-nums}.file-actions{display:flex;gap:10px}.file-actions .button{font-size:12px;padding:8px 12px}.searchbar{margin:0 25px 23px;padding:16px;background:#f8fafb;border:1px solid #edf0f3;border-radius:7px;display:flex;gap:12px;align-items:center}.search-field{position:relative;flex:1;max-width:330px}.search-field>span{position:absolute;left:12px;top:7px;color:#85929f;font-size:23px}.search-field input{width:100%;padding:10px 12px 10px 36px}.searchbar input,.searchbar select,.form-field input,.form-field select,.form-field textarea{border:1px solid #dfe5e9;border-radius:5px;background:#fff;color:#344454;min-height:40px}.searchbar input::placeholder,.form-field input::placeholder,.form-field textarea::placeholder{color:#a2abb5}.class-filter{display:flex;gap:12px;align-items:center;color:#6f7c89;font-size:13px}.class-filter select{min-width:150px;padding:8px 30px 8px 12px}.search-button{color:white;background:#35495d;padding:9px 19px}.search-button:hover{background:#26384b}.reset-button{border:0;background:none;padding:10px 5px;color:#7c8996;font-size:13px}.reset-button:hover{color:var(--green)}.table-scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;text-align:left;white-space:nowrap}th{padding:14px 22px;background:#f8fafb;color:#7b8793;font-size:12px;font-weight:500;border-top:1px solid #edf0f3;border-bottom:1px solid #edf0f3}td{padding:17px 22px;border-bottom:1px solid #eff2f5;font-size:13px;color:#5a6877;height:69px}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#fcfdfd}.number-col{width:72px;text-align:center}td:first-child{text-align:center;color:#a0a9b2;font-size:12px}.student-cell{display:flex;gap:10px;align-items:center;font-weight:550;color:#344456}.avatar{display:grid;place-items:center;width:32px;height:32px;background:#edf4f1;color:#527e70;border-radius:50%;font-size:12px;font-weight:500}.avatar.tone-1{background:#edf1fa;color:#6980aa}.avatar.tone-2{background:#f6f0e9;color:#b18b65}.student-number{font-variant-numeric:tabular-nums;letter-spacing:.5px;color:#83909e}.class-badge{background:#f2f5f8;border-radius:4px;padding:5px 8px;font-size:12px;color:#728195}.score-cell{font-variant-numeric:tabular-nums;color:#3e5868;font-weight:550}.action-col{width:175px}.row-actions{display:flex;align-items:center;gap:16px}.text-action{padding:4px 0;border:0;background:none;color:#5b7e9b;font-size:12px}.text-action:hover{text-decoration:underline}.text-action.edit{color:var(--green)}.text-action.delete{color:#bc7a77}.table-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding:17px 25px;color:#94a0ab;font-size:12px;gap:16px}.local-status{display:flex;align-items:center;gap:7px}.local-status i{width:5px;height:5px;border-radius:50%;background:#7fa997}.bottom-notes{display:flex;justify-content:space-between;gap:20px;font-size:11px;color:#9ba4ad;line-height:1.8;margin-top:19px}.bottom-notes p{margin:0}.bottom-notes>span{white-space:nowrap}.empty-state{text-align:center;padding:55px 20px;color:#9aa5ae}.empty-state>span{font-size:34px;color:#b7c8c1}.empty-state h3{font-size:15px;color:#677b83;font-weight:500}.empty-state p{font-size:12px}[hidden]{display:none!important}dialog{border:1px solid #e2e8e6;border-radius:12px;padding:0;width:560px;max-width:calc(100vw - 32px);max-height:calc(100vh - 40px);box-shadow:0 24px 100px #1f354133;color:#233345}dialog::backdrop{background:#172a3b55;backdrop-filter:blur(3px)}.dialog-heading{display:flex;justify-content:space-between;align-items:flex-start;padding:27px 28px 22px;border-bottom:1px solid var(--border)}.dialog-heading h2{margin:8px 0 0;font-size:22px;font-weight:600}.close-button{font-size:25px;color:#8f9aa2;border:0;background:none;line-height:26px;padding:0 2px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:24px 28px}.form-field{display:flex;flex-direction:column;gap:9px;min-width:0}.form-field label{font-size:12px;color:#627381}.form-field input,.form-field select,.form-field textarea{width:100%;padding:10px 12px;font-size:13px}.form-field textarea{resize:vertical;line-height:1.7}.full-width{grid-column:1/-1}.dialog-footer{display:flex;gap:10px;justify-content:flex-end;padding:18px 28px;border-top:1px solid var(--border);background:#fafcfb}.detail-grid{display:grid;grid-template-columns:110px 1fr;padding:22px 28px;margin:0;font-size:14px}.detail-grid dt,.detail-grid dd{padding:13px 0;border-bottom:1px solid #eff2f4;overflow-wrap:anywhere;white-space:pre-wrap}.detail-grid dt{color:#8a959e}.detail-grid dd{margin:0}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(min-width:1500px){main{padding-top:40px}.page-heading{margin-bottom:38px}.breadcrumb{margin-bottom:42px}}@media(max-width:800px){main{padding:24px 20px 40px}.topbar{padding:0 20px}.top-label{display:none}.searchbar{flex-wrap:wrap}.search-field{min-width:180px;max-width:none}.bottom-notes{display:block}.bottom-notes>span{display:block;margin-top:10px}th,td{padding-left:16px;padding-right:16px}}@media(max-width:520px){.topbar{height:66px}.brand{font-size:16px}.brand-divider{margin:0 10px}.brand-secondary{font-size:12px}main{padding:22px 12px}.breadcrumb{margin-bottom:25px}.page-heading{align-items:flex-end}.page-heading h1{font-size:25px}.page-heading p{font-size:11px}.page-heading .button{padding:9px 11px;font-size:12px}.eyebrow{font-size:9px}.section-heading{padding:18px 15px;flex-wrap:wrap}.section-title h2{font-size:15px}.file-actions{gap:6px}.file-actions .button{padding:6px 9px;font-size:11px}.searchbar{margin:0 15px 18px;padding:12px;gap:10px}.search-field{flex-basis:100%}.class-filter{flex:1;gap:7px}.class-filter select{min-width:0;flex:1;width:100px}.search-button{padding:8px 14px}.table-footer{padding:15px;font-size:11px}.form-grid{padding:20px;gap:16px}.dialog-heading{padding:22px 20px}.dialog-footer{padding:16px 20px}.detail-grid{padding:16px 20px;grid-template-columns:75px 1fr}}
-</style>
+  <style>
+    :root{font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif;color:#26384a;background:#f5f7fa;font-synthesis:none;--green:#217462;--green-dark:#185e4f;--navy:#35495d;--border:#e5eaee;--muted:#7f8c99}
+    *{box-sizing:border-box}body{margin:0}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.45}button,input,select,textarea{outline-offset:3px}:focus-visible{outline:2px solid var(--green)}
+    .topbar{height:76px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;gap:20px}.brand{display:flex;align-items:center;font-weight:650;font-size:18px;white-space:nowrap}.brand-icon{display:grid;place-items:center;width:38px;height:38px;margin-right:12px;background:var(--green);color:#fff;border-radius:11px;font-size:20px}.brand-divider{margin:0 18px;color:#c7cdd3;font-weight:400}.brand-secondary{font-weight:400;font-size:14px;color:#677381}.top-label{font-size:12px;color:#8b95a2}
+    main{max-width:1280px;margin:0 auto;padding:30px 42px 60px}.breadcrumb{font-size:12px;color:#8a95a1;display:flex;gap:14px;margin-bottom:34px}.breadcrumb span{color:#c3cbd3}.page-heading{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:26px}.eyebrow{font-size:10px;letter-spacing:2px;font-weight:650;color:#7c8b92}h1{font-size:30px;font-weight:650;letter-spacing:1px;margin:10px 0 12px}.page-heading p{font-size:13px;color:#89929d;margin:0;letter-spacing:.5px}
+    .workspace{border:1px solid var(--border);border-radius:10px;background:#fff;box-shadow:0 3px 14px #20344708;overflow:hidden}.section-heading{display:flex;align-items:center;justify-content:space-between;padding:22px 25px 18px;gap:16px;flex-wrap:wrap}.section-title,.toolbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.section-title h2{font-size:16px;font-weight:650;margin:0}.small-icon{font-size:21px;color:var(--green)}.count{background:#edf3f1;color:var(--green);font-size:11px;padding:3px 8px;border-radius:5px;font-variant-numeric:tabular-nums}
+    .button{border:1px solid transparent;border-radius:6px;padding:9px 13px;display:inline-flex;align-items:center;justify-content:center;gap:6px;line-height:20px;white-space:nowrap;transition:.15s}.button span{font-size:17px;line-height:16px}.primary{background:var(--green);color:#fff}.primary:hover:not(:disabled){background:var(--green-dark)}.secondary{background:#fff;border-color:#dfe5ea;color:#536272}.secondary:hover:not(:disabled){background:#f6f8fa}.danger{background:#fff;border-color:#ecd8d6;color:#b46661}.danger:hover:not(:disabled){background:#fff6f5}
+    .search-panel{margin:0 25px 22px;padding:18px;background:#f8fafb;border:1px solid #e9eef1;border-radius:8px}.search-caption{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:14px}.search-caption strong{font-size:13px;color:#4f6070}.search-caption span{font-size:11px;color:#929ca6}.search-grid{display:grid;grid-template-columns:repeat(6,minmax(125px,1fr));gap:13px;align-items:end}.search-field{display:flex;flex-direction:column;gap:7px;min-width:0}.search-field label{font-size:12px;color:#657481}.search-field input,.search-field select,.form-field input,.form-field select,.form-field textarea{width:100%;border:1px solid #dce3e8;border-radius:5px;background:#fff;color:#344454;min-height:40px;padding:8px 11px}.search-field input::placeholder,.form-field input::placeholder,.form-field textarea::placeholder{color:#a4adb6}.score-range{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px}.score-range span{color:#a1a9b1}.search-actions{display:flex;gap:8px}.search-button{background:var(--navy);color:#fff;min-width:76px}.search-button:hover{background:#26384b}
+    .table-scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;text-align:left;white-space:nowrap}th{padding:14px 18px;background:#f8fafb;color:#7b8793;font-size:12px;font-weight:500;border-top:1px solid #edf0f3;border-bottom:1px solid #edf0f3}td{padding:16px 18px;border-bottom:1px solid #eff2f5;font-size:13px;color:#5a6877;height:67px}tbody tr:hover{background:#fcfdfd}.check-col{width:45px;text-align:center}.number-col{width:68px;text-align:center}.student-cell{display:flex;gap:10px;align-items:center;font-weight:550;color:#344456}.avatar{display:grid;place-items:center;width:32px;height:32px;background:#edf4f1;color:#527e70;border-radius:50%;font-size:12px}.avatar.tone-1{background:#edf1fa;color:#6980aa}.avatar.tone-2{background:#f6f0e9;color:#b18b65}.student-number{font-variant-numeric:tabular-nums;letter-spacing:.4px;color:#83909e}.class-badge{background:#f2f5f8;border-radius:4px;padding:5px 8px;font-size:12px;color:#728195}.score-cell{font-variant-numeric:tabular-nums;color:#3e5868;font-weight:550}.action-col{width:155px}.row-actions{display:flex;gap:15px}.text-action{padding:4px 0;border:0;background:none;color:#5b7e9b;font-size:12px}.text-action:hover{text-decoration:underline}.text-action.edit{color:var(--green)}.text-action.delete{color:#bc6e69}
+    .empty-state{text-align:center;padding:58px 20px;color:#9aa5ae}.empty-state>span{font-size:34px;color:#b7c8c1}.empty-state h3{font-size:15px;color:#677b83;font-weight:500;margin:12px 0 8px}.empty-state p{font-size:12px;margin:0}.table-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding:16px 25px;color:#8f9ca7;font-size:12px;gap:16px;flex-wrap:wrap}.local-status{display:flex;align-items:center;gap:7px}.local-status i{width:6px;height:6px;border-radius:50%;background:#7fa997}.notice{color:var(--green)}.bottom-notes{display:flex;justify-content:space-between;gap:20px;font-size:11px;color:#9ba4ad;line-height:1.8;margin-top:18px}.bottom-notes p{margin:0}.bottom-notes>span{white-space:nowrap}
+    [hidden]{display:none!important}dialog{border:1px solid #e2e8e6;border-radius:12px;padding:0;width:560px;max-width:calc(100vw - 32px);max-height:calc(100vh - 40px);box-shadow:0 24px 100px #1f354133;color:#233345}dialog::backdrop{background:#172a3b55;backdrop-filter:blur(3px)}.dialog-heading{display:flex;justify-content:space-between;align-items:flex-start;padding:27px 28px 22px;border-bottom:1px solid var(--border)}.dialog-heading h2{margin:8px 0 0;font-size:22px;font-weight:600}.close-button{font-size:25px;color:#8f9aa2;border:0;background:none;line-height:26px;padding:0 2px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:24px 28px}.form-field{display:flex;flex-direction:column;gap:8px;min-width:0}.form-field label{font-size:12px;color:#627381}.form-field textarea{resize:vertical;line-height:1.7}.full-width{grid-column:1/-1}.required{color:#ba6863}.field-error{font-size:11px;color:#b45f5a;min-height:15px}.dialog-footer{display:flex;gap:10px;justify-content:flex-end;padding:18px 28px;border-top:1px solid var(--border);background:#fafcfb}.detail-grid{display:grid;grid-template-columns:110px 1fr;padding:22px 28px;margin:0;font-size:14px}.detail-grid dt,.detail-grid dd{padding:13px 0;border-bottom:1px solid #eff2f4;overflow-wrap:anywhere;white-space:pre-wrap}.detail-grid dt{color:#8a959e}.detail-grid dd{margin:0}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:1050px){.search-grid{grid-template-columns:repeat(3,minmax(150px,1fr))}}
+    @media(max-width:720px){main{padding:24px 16px 40px}.topbar{padding:0 18px}.top-label{display:none}.page-heading{align-items:flex-start}.search-panel{margin:0 14px 18px;padding:14px}.search-grid{grid-template-columns:1fr 1fr}.search-actions{grid-column:1/-1}.bottom-notes{display:block}.bottom-notes>span{display:block;margin-top:8px}.section-heading{padding:18px 14px}.toolbar{width:100%}.toolbar .button{flex:1}.form-grid{padding:20px}.dialog-heading{padding:22px 20px}.dialog-footer{padding:16px 20px}th,td{padding-left:14px;padding-right:14px}}
+    @media(max-width:480px){.brand{font-size:16px}.brand-divider{margin:0 9px}.brand-secondary{font-size:12px}.page-heading h1{font-size:25px}.search-grid{grid-template-columns:1fr}.search-actions{grid-column:auto}.search-caption{display:block}.search-caption span{display:block;margin-top:5px}.form-grid{grid-template-columns:1fr}.full-width{grid-column:auto}}
+  </style>
   <script type="module">
-const STORAGE_KEY = 'qinghe-students-v1';
-const fields = ['name', 'number', 'gender', 'className', 'score', 'notes'];
-const headers = ['姓名', '学号', '性别', '班级', '成绩', '备注'];
-const seedStudents = [
-  ['林知夏', '20260001', '女', '高一（1）班', '92', ''],
-  ['陈宇航', '20260002', '男', '高一（1）班', '85', ''],
-  ['周雨桐', '20260003', '女', '高一（2）班', '96', '学习委员'],
-  ['王子墨', '20260004', '男', '高一（1）班', '88', ''],
-  ['李沐晴', '20260005', '女', '高一（2）班', '90', ''],
-  ['张景行', '20260006', '男', '高一（2）班', '79', ''],
-  ['许星禾', '20260007', '女', '高一（1）班', '94', ''],
-  ['刘亦辰', '20260008', '男', '高一（2）班', '83', ''],
-  ['赵书宁', '20260009', '女', '高一（1）班', '91', ''],
-  ['吴明远', '20260010', '男', '高一（2）班', '87', '']
-].map((values, i) => ({id: `sample-${i + 1}`, ...Object.fromEntries(fields.map((key, j) => [key, values[j]]))}));
+    const STORAGE_KEY = 'qinghe-students-v2';
+    const LEGACY_KEYS = ['qinghe-students-v1'];
+    const fields = ['name','number','gender','className','score','notes'];
+    const headers = ['姓名','学号','性别','班级','成绩','备注'];
+    const $ = selector => document.querySelector(selector);
 
-function filterStudents(students, keyword = '', className = '') {
-  const needle = keyword.trim().toLocaleLowerCase();
-  return students.filter(student => (!className || student.className === className) && (!needle || [student.name, student.number].some(value => String(value ?? '').toLocaleLowerCase().includes(needle))));
-}
+    LEGACY_KEYS.forEach(key => localStorage.removeItem(key));
+    let students = [];
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
+      if (Array.isArray(saved)) students = saved;
+    } catch { students = []; }
 
-function parseCSV(text) {
-  const rows = []; let row = [], value = '', quoted = false;
-  text = text.replace(/^\uFEFF/, '');
-  for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-    if (char === '"') {
-      if (quoted && text[i + 1] === '"') {value += '"'; i++;}
-      else if (quoted || value.length === 0) quoted = !quoted;
-      else value += char;
-    } else if (char === ',' && !quoted) {row.push(value); value = '';}
-    else if ((char === '\n' || char === '\r') && !quoted) {
-      row.push(value); rows.push(row); row = []; value = '';
-      if (char === '\r' && text[i + 1] === '\n') i++;
-    } else value += char;
-  }
-  if (value.length || row.length) {row.push(value); rows.push(row);}
-  return rows.filter(values => values.some(cell => cell !== ''));
-}
+    let editingId = null;
+    let selectedIds = new Set();
+    let query = {name:'',number:'',gender:'',className:'',scoreMin:'',scoreMax:''};
+    const form = $('#student-form');
+    const dialog = $('#student-dialog');
+    const detailDialog = $('#detail-dialog');
 
-function importStudents(text, createId = () => crypto.randomUUID()) {
-  const rows = parseCSV(text);
-  if (!rows.length) return [];
-  const first = rows[0].map(value => value.trim());
-  const hasHeader = first.includes('姓名') || first.includes('name');
-  const positions = hasHeader ? fields.map((key, i) => first.findIndex(value => value === key || value === headers[i])) : fields.map((_, i) => i);
-  return rows.slice(hasHeader ? 1 : 0).map(row => ({id: createId(), ...Object.fromEntries(fields.map((key, i) => [key, row[positions[i]] ?? '']))}));
-}
+    function persist(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(students)); }
+    function normalize(value){ return String(value ?? '').trim().toLocaleLowerCase(); }
+    function createId(){ return crypto.randomUUID?.() ?? `student-${Date.now()}-${Math.random().toString(16).slice(2)}`; }
+    function matchesQuery(student){
+      const score = Number(student.score);
+      return (!query.name || normalize(student.name).includes(normalize(query.name)))
+        && (!query.number || normalize(student.number).includes(normalize(query.number)))
+        && (!query.gender || student.gender === query.gender)
+        && (!query.className || student.className === query.className)
+        && (query.scoreMin === '' || (!Number.isNaN(score) && score >= Number(query.scoreMin)))
+        && (query.scoreMax === '' || (!Number.isNaN(score) && score <= Number(query.scoreMax)));
+    }
+    function visibleStudents(){ return students.filter(matchesQuery); }
+    function setNotice(message){ $('#notice').textContent = message; }
 
-function exportStudents(students) {
-  const quote = value => `"${String(value ?? '').replaceAll('"', '""')}"`;
-  return '\uFEFF' + [headers, ...students.map(student => fields.map(key => student[key]))].map(row => row.map(quote).join(',')).join('\r\n') + '\r\n';
-}
+    function updateClassOptions(){
+      const select = $('#query-class');
+      const current = select.value;
+      const classes = [...new Set(students.map(item => item.className).filter(Boolean))].sort((a,b) => a.localeCompare(b,'zh-CN'));
+      select.replaceChildren(new Option('全部班级',''), ...classes.map(name => new Option(name,name)));
+      select.value = classes.includes(current) ? current : '';
+    }
 
+    function updateSelectionControls(visible){
+      const visibleIds = visible.map(item => item.id);
+      const checked = visibleIds.filter(id => selectedIds.has(id)).length;
+      const all = $('#select-all');
+      all.checked = visibleIds.length > 0 && checked === visibleIds.length;
+      all.indeterminate = checked > 0 && checked < visibleIds.length;
+      $('#edit-selected').disabled = selectedIds.size !== 1;
+      $('#delete-selected').disabled = selectedIds.size === 0;
+    }
 
-const $ = selector => document.querySelector(selector);
-let students;
-try {students = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');} catch {students = null;}
-if (!Array.isArray(students)) students = structuredClone(seedStudents);
-let editingId = null;
-const form = $('#student-form');
-const dialog = $('#student-dialog');
-const detailDialog = $('#detail-dialog');
-const keyword = $('#keyword');
-const classFilter = $('#class-filter');
+    function render(){
+      updateClassOptions();
+      const visible = visibleStudents();
+      const body = $('#student-rows');
+      body.replaceChildren();
+      visible.forEach((student,index) => {
+        const row = document.createElement('tr');
+        const cell = (value='',className='') => { const td=document.createElement('td'); td.textContent=value; td.className=className; row.append(td); return td; };
+        const selectCell = cell('', 'check-col');
+        const checkbox = document.createElement('input'); checkbox.type='checkbox'; checkbox.checked=selectedIds.has(student.id); checkbox.setAttribute('aria-label',`选择${student.name || student.number || '学生'}`);
+        checkbox.addEventListener('change',()=>{ checkbox.checked ? selectedIds.add(student.id) : selectedIds.delete(student.id); updateSelectionControls(visible); });
+        selectCell.append(checkbox);
+        cell(String(index+1).padStart(2,'0'),'number-col');
+        const nameCell=cell(); const wrap=document.createElement('div'); wrap.className='student-cell';
+        const avatar=document.createElement('span'); avatar.className=`avatar tone-${index%3}`; avatar.textContent=Array.from(student.name || '学')[0]; avatar.setAttribute('aria-hidden','true');
+        const name=document.createElement('span'); name.textContent=student.name || '—'; wrap.append(avatar,name); nameCell.append(wrap);
+        cell(student.number || '—','student-number'); cell(student.gender || '—');
+        const classCell=cell(); const badge=document.createElement('span'); badge.className='class-badge'; badge.textContent=student.className || '—'; classCell.append(badge);
+        cell(student.score || '—','score-cell');
+        const actionCell=cell(); const actions=document.createElement('div'); actions.className='row-actions';
+        [['查看','',()=>showDetail(student)],['修改','edit',()=>openForm(student)],['删除','delete',()=>deleteStudents([student.id])]].forEach(([label,className,handler])=>{
+          const button=document.createElement('button'); button.type='button'; button.className=`text-action ${className}`; button.textContent=label; button.addEventListener('click',handler); actions.append(button);
+        }); actionCell.append(actions); body.append(row);
+      });
+      $('#empty-state').hidden = visible.length > 0;
+      $('#total-count').textContent = students.length;
+      const filtered = Object.values(query).some(Boolean);
+      $('#result-count').textContent = filtered ? `查询到 ${visible.length} 条记录，共 ${students.length} 条` : `共 ${students.length} 条记录`;
+      updateSelectionControls(visible);
+    }
 
-function persist() {localStorage.setItem(STORAGE_KEY, JSON.stringify(students));}
-function visibleStudents() {return filterStudents(students, keyword.value, classFilter.value);}
+    function openForm(student=null){
+      editingId=student?.id ?? null; form.reset(); $('#number-error').textContent='';
+      $('#dialog-title').textContent=student ? '修改学生信息' : '新增学生';
+      fields.forEach(key=>{ const control=form.elements.namedItem(key); control.value=student?.[key] ?? ''; });
+      dialog.showModal(); $('#student-name').focus();
+    }
+    function showDetail(student){
+      const detail=$('#student-detail'); detail.replaceChildren();
+      fields.forEach((key,index)=>{ const dt=document.createElement('dt'); dt.textContent=headers[index]; const dd=document.createElement('dd'); dd.textContent=student[key] || '—'; detail.append(dt,dd); });
+      detailDialog.showModal();
+    }
+    function deleteStudents(ids){
+      if (!ids.length) return;
+      if (!confirm(`确定删除选中的 ${ids.length} 条学生记录吗？删除后无法恢复。`)) return;
+      const targets=new Set(ids); students=students.filter(item=>!targets.has(item.id)); targets.forEach(id=>selectedIds.delete(id)); persist(); render(); setNotice(`已删除 ${ids.length} 条记录。`);
+    }
 
-function render() {
-  const selectedClass = classFilter.value;
-  const classes = [...new Set(students.map(student => student.className).filter(Boolean))];
-  if (selectedClass && !classes.includes(selectedClass)) classes.push(selectedClass);
-  classFilter.replaceChildren(new Option('全部班级', ''), ...classes.map(name => new Option(name, name)));
-  classFilter.value = selectedClass;
-  const visible = visibleStudents();
-  const body = $('#student-rows'); body.replaceChildren();
-  visible.forEach((student, index) => {
-    const row = document.createElement('tr');
-    const cell = (value, className = '') => {const td = document.createElement('td'); td.textContent = value; td.className = className; row.append(td); return td;};
-    cell(String(index + 1).padStart(2, '0'));
-    const nameCell = cell(''); const nameWrap = document.createElement('div'); nameWrap.className = 'student-cell';
-    const avatar = document.createElement('span'); avatar.className = `avatar tone-${index % 3}`; avatar.setAttribute('aria-hidden', 'true'); avatar.textContent = Array.from(student.name || '学')[0];
-    const name = document.createElement('span'); name.textContent = student.name || '—'; nameWrap.append(avatar, name); nameCell.append(nameWrap);
-    cell(student.number || '—', 'student-number'); cell(student.gender || '—');
-    const classCell = cell(''); const badge = document.createElement('span'); badge.className = 'class-badge'; badge.textContent = student.className || '—'; classCell.append(badge);
-    cell(student.score || '—', 'score-cell');
-    const actions = cell(''); const actionWrap = document.createElement('div'); actionWrap.className = 'row-actions';
-    [['查看', '', () => showDetail(student)], ['编辑', 'edit', () => openForm(student)], ['删除', 'delete', () => {students = students.filter(item => item.id !== student.id); persist(); render();}]].forEach(([label, className, action]) => {
-      const button = document.createElement('button'); button.type = 'button'; button.textContent = label; button.className = `text-action ${className}`; button.setAttribute('aria-label', `${label}学生${student.name || student.number || ''}`); button.addEventListener('click', action); actionWrap.append(button);
+    function parseCSV(text){
+      const rows=[]; let row=[],value='',quoted=false; text=text.replace(/^\uFEFF/,'');
+      for(let i=0;i<text.length;i++){
+        const char=text[i];
+        if(char==='"'){ if(quoted && text[i+1]==='"'){value+='"';i++;} else if(quoted || value.length===0) quoted=!quoted; else value+=char; }
+        else if(char===',' && !quoted){row.push(value);value='';}
+        else if((char==='\n'||char==='\r') && !quoted){row.push(value);rows.push(row);row=[];value='';if(char==='\r'&&text[i+1]==='\n')i++;}
+        else value+=char;
+      }
+      if(value.length||row.length){row.push(value);rows.push(row);}
+      return rows.filter(values=>values.some(cell=>String(cell).trim()!==''));
+    }
+    function recordsFromCSV(text){
+      const rows=parseCSV(text); if(!rows.length) return [];
+      const first=rows[0].map(value=>normalize(value));
+      const positions=fields.map((key,index)=>first.findIndex(value=>value===normalize(key)||value===normalize(headers[index])));
+      const hasHeader=positions.some(position=>position>=0);
+      const map=hasHeader ? positions : fields.map((_,index)=>index);
+      return rows.slice(hasHeader?1:0).map(row=>Object.fromEntries(fields.map((key,index)=>[key,String(row[map[index]] ?? '').trim()])))
+        .filter(record=>record.name || record.number);
+    }
+    function exportCSV(records){
+      const quote=value=>`"${String(value??'').replaceAll('"','""')}"`;
+      return '\uFEFF'+[headers,...records.map(student=>fields.map(key=>student[key]))].map(row=>row.map(quote).join(',')).join('\r\n')+'\r\n';
+    }
+
+    $('#add-student').addEventListener('click',()=>openForm());
+    $('#edit-selected').addEventListener('click',()=>{ const id=[...selectedIds][0]; const student=students.find(item=>item.id===id); if(student) openForm(student); });
+    $('#delete-selected').addEventListener('click',()=>deleteStudents([...selectedIds]));
+    $('#select-all').addEventListener('change',event=>{ visibleStudents().forEach(item=>event.target.checked ? selectedIds.add(item.id) : selectedIds.delete(item.id)); render(); });
+    $('#close-dialog').addEventListener('click',()=>dialog.close()); $('#cancel-dialog').addEventListener('click',()=>dialog.close());
+    $('#close-detail').addEventListener('click',()=>detailDialog.close()); $('#done-detail').addEventListener('click',()=>detailDialog.close());
+    form.addEventListener('submit',event=>{
+      event.preventDefault();
+      const record={id:editingId ?? createId(),...Object.fromEntries(fields.map(key=>[key,form.elements.namedItem(key).value.trim()]))};
+      const duplicate=students.find(item=>normalize(item.number)===normalize(record.number) && item.id!==editingId);
+      if(duplicate){ $('#number-error').textContent='该学号已存在，请检查后重试。'; form.elements.namedItem('number').focus(); return; }
+      if(editingId) students=students.map(item=>item.id===editingId?record:item); else students.push(record);
+      persist(); dialog.close(); selectedIds.clear(); render(); setNotice(editingId?'学生信息已修改。':'学生已新增。');
     });
-    actions.append(actionWrap); body.append(row);
-  });
-  $('#empty-state').hidden = visible.length > 0;
-  $('#total-count').textContent = students.length;
-  $('#result-count').textContent = visible.length === students.length ? `共 ${students.length} 条记录` : `查询到 ${visible.length} 条记录，共 ${students.length} 条`;
-}
-
-function openForm(student = null) {
-  editingId = student?.id ?? null; form.reset();
-  $('#dialog-title').textContent = student ? '编辑学生' : '新增学生';
-  fields.forEach(key => {
-    const control = form.elements.namedItem(key);
-    if (key === 'gender' && student?.gender && ![...control.options].some(option => option.value === student.gender)) control.add(new Option(student.gender, student.gender));
-    control.value = student?.[key] ?? '';
-  });
-  dialog.showModal(); $('#student-name').focus();
-}
-
-function showDetail(student) {
-  const detail = $('#student-detail'); detail.replaceChildren();
-  fields.forEach((key, index) => {const term = document.createElement('dt'); term.textContent = headers[index]; const value = document.createElement('dd'); value.textContent = student[key] || '—'; detail.append(term, value);});
-  detailDialog.showModal();
-}
-
-$('#add-student').addEventListener('click', () => openForm());
-$('#close-dialog').addEventListener('click', () => dialog.close());
-$('#cancel-dialog').addEventListener('click', () => dialog.close());
-$('#close-detail').addEventListener('click', () => detailDialog.close());
-$('#done-detail').addEventListener('click', () => detailDialog.close());
-form.addEventListener('submit', event => {
-  event.preventDefault();
-  const record = {id: editingId ?? crypto.randomUUID(), ...Object.fromEntries(fields.map(key => [key, form.elements.namedItem(key).value]))};
-  if (editingId !== null) students = students.map(student => student.id === editingId ? record : student);
-  else students.push(record);
-  persist(); dialog.close(); render();
-});
-$('#search-form').addEventListener('submit', event => {event.preventDefault(); render();});
-keyword.addEventListener('input', render); classFilter.addEventListener('change', render);
-$('#reset-search').addEventListener('click', () => {keyword.value = ''; classFilter.value = ''; render();});
-$('#import-csv').addEventListener('click', () => $('#import-file').click());
-$('#import-file').addEventListener('change', async event => {
-  const file = event.target.files[0]; if (!file) return;
-  try {students.push(...importStudents(await file.text())); persist(); render();}
-  finally {event.target.value = '';}
-});
-$('#export-csv').addEventListener('click', () => {
-  const blob = new Blob([exportStudents(visibleStudents())], {type: 'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob); const anchor = document.createElement('a');
-  anchor.href = url; anchor.download = '学生信息.csv'; document.body.append(anchor); anchor.click(); anchor.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-});
-persist(); render();
-
-</script>
+    $('#search-form').addEventListener('submit',event=>{
+      event.preventDefault(); const data=new FormData(event.currentTarget); query=Object.fromEntries(data.entries()); selectedIds.clear(); render(); setNotice(`查询完成，共找到 ${visibleStudents().length} 条记录。`);
+    });
+    $('#reset-search').addEventListener('click',()=>{ $('#search-form').reset(); query={name:'',number:'',gender:'',className:'',scoreMin:'',scoreMax:''}; selectedIds.clear(); render(); setNotice('查询条件已重置。'); });
+    $('#import-csv').addEventListener('click',()=>$('#import-file').click());
+    $('#import-file').addEventListener('change',async event=>{
+      const file=event.target.files[0]; if(!file)return;
+      try{
+        const records=recordsFromCSV(await file.text()); let added=0,overwritten=0;
+        records.forEach(record=>{
+          const index=record.number ? students.findIndex(item=>normalize(item.number)===normalize(record.number)) : -1;
+          if(index>=0){students[index]={...record,id:students[index].id};overwritten++;} else {students.push({...record,id:createId()});added++;}
+        });
+        persist(); selectedIds.clear(); render(); setNotice(`导入完成：新增 ${added} 条，按学号覆盖 ${overwritten} 条。`);
+      } catch { setNotice('导入失败，请检查 CSV 文件格式。'); }
+      finally {event.target.value='';}
+    });
+    $('#export-csv').addEventListener('click',()=>{
+      const records=visibleStudents(); const blob=new Blob([exportCSV(records)],{type:'text/csv;charset=utf-8;'}); const url=URL.createObjectURL(blob); const anchor=document.createElement('a');
+      anchor.href=url;anchor.download='学生信息.csv';document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);setNotice(`已导出当前查询结果 ${records.length} 条。`);
+    });
+    persist(); render();
+  </script>
 </head>
 <body>
   <header class="topbar"><div class="brand"><span class="brand-icon" aria-hidden="true">学</span><span>青禾学籍<span class="brand-divider">/</span><span class="brand-secondary">学生信息管理</span></span></div><span class="top-label">学生管理工作台</span></header>
   <main>
     <div class="breadcrumb">管理工作台 <span>/</span> 学生信息</div>
-    <section class="page-heading"><div><div class="eyebrow">STUDENT DIRECTORY</div><h1>学生信息管理</h1><p>每一份学生档案，都在这里清晰有序。</p></div><button type="button" id="add-student" class="button primary"><span aria-hidden="true">＋</span> 新增学生</button></section>
+    <section class="page-heading"><div><div class="eyebrow">STUDENT DIRECTORY</div><h1>学生信息管理</h1><p>学生档案增删改查、导入与导出。</p></div></section>
     <section class="workspace" aria-labelledby="list-heading">
-      <div class="section-heading"><div class="section-title"><span class="small-icon" aria-hidden="true">▤</span><h2 id="list-heading">学生列表</h2><span id="total-count" class="count">10</span></div><div class="file-actions"><input type="file" id="import-file" accept=".csv,text/csv" hidden><button type="button" id="import-csv" class="button secondary"><span aria-hidden="true">↥</span> 导入 CSV</button><button type="button" id="export-csv" class="button secondary"><span aria-hidden="true">↧</span> 导出 CSV</button></div></div>
-      <form id="search-form" class="searchbar" role="search"><div class="search-field"><label class="sr-only" for="keyword">搜索姓名或学号</label><span aria-hidden="true">⌕</span><input id="keyword" type="search" placeholder="搜索姓名或学号" autocomplete="off"></div><div class="class-filter"><label for="class-filter">班级</label><select id="class-filter"><option value="">全部班级</option></select></div><button type="submit" class="button search-button">查询</button><button type="button" id="reset-search" class="reset-button">重置</button></form>
-      <div class="table-scroll"><table><thead><tr><th class="number-col" scope="col">序号</th><th scope="col">学生姓名</th><th scope="col">学号</th><th scope="col">性别</th><th scope="col">班级</th><th scope="col">成绩</th><th scope="col" class="action-col">操作</th></tr></thead><tbody id="student-rows"></tbody></table></div>
-      <div id="empty-state" class="empty-state" hidden><span aria-hidden="true">▤</span><h3>暂无学生信息</h3><p>可以新增学生、导入 CSV，或调整查询条件。</p></div>
-      <footer class="table-footer"><span id="result-count">共 10 条记录</span><span class="local-status"><i aria-hidden="true"></i>数据保存在当前浏览器</span></footer>
+      <div class="section-heading">
+        <div class="section-title"><span class="small-icon" aria-hidden="true">▤</span><h2 id="list-heading">学生列表</h2><span id="total-count" class="count">0</span></div>
+        <div class="toolbar">
+          <button type="button" id="add-student" class="button primary"><span aria-hidden="true">＋</span>新增</button>
+          <button type="button" id="edit-selected" class="button secondary" disabled><span aria-hidden="true">✎</span>修改</button>
+          <button type="button" id="delete-selected" class="button danger" disabled><span aria-hidden="true">×</span>删除</button>
+          <input type="file" id="import-file" accept=".csv,text/csv" hidden>
+          <button type="button" id="import-csv" class="button secondary"><span aria-hidden="true">↥</span>导入</button>
+          <button type="button" id="export-csv" class="button secondary"><span aria-hidden="true">↧</span>导出</button>
+        </div>
+      </div>
+      <form id="search-form" class="search-panel" role="search">
+        <div class="search-caption"><strong>查询条件</strong><span>可单独查询，也可组合多个条件查询</span></div>
+        <div class="search-grid">
+          <div class="search-field"><label for="query-name">姓名</label><input id="query-name" name="name" type="search" placeholder="输入姓名" autocomplete="off"></div>
+          <div class="search-field"><label for="query-number">学号</label><input id="query-number" name="number" type="search" placeholder="输入学号" autocomplete="off"></div>
+          <div class="search-field"><label for="query-gender">性别</label><select id="query-gender" name="gender"><option value="">全部性别</option><option>男</option><option>女</option><option>其他</option></select></div>
+          <div class="search-field"><label for="query-class">班级</label><select id="query-class" name="className"><option value="">全部班级</option></select></div>
+          <div class="search-field"><label for="query-score-min">成绩范围</label><div class="score-range"><input id="query-score-min" name="scoreMin" type="number" min="0" max="100" placeholder="最低"><span>—</span><input name="scoreMax" type="number" min="0" max="100" aria-label="最高成绩" placeholder="最高"></div></div>
+          <div class="search-actions"><button type="submit" class="button search-button">查询</button><button type="button" id="reset-search" class="button secondary">重置</button></div>
+        </div>
+      </form>
+      <div class="table-scroll"><table><thead><tr><th class="check-col"><input id="select-all" type="checkbox" aria-label="选择当前查询结果全部学生"></th><th class="number-col">序号</th><th>学生姓名</th><th>学号</th><th>性别</th><th>班级</th><th>成绩</th><th class="action-col">操作</th></tr></thead><tbody id="student-rows"></tbody></table></div>
+      <div id="empty-state" class="empty-state"><span aria-hidden="true">▤</span><h3>暂无学生数据</h3><p>请点击“新增”录入学生，或使用“导入”批量添加。</p></div>
+      <footer class="table-footer"><span id="result-count">共 0 条记录</span><span id="notice" class="notice" role="status"></span><span class="local-status"><i aria-hidden="true"></i>数据保存在当前浏览器</span></footer>
     </section>
-    <div class="bottom-notes"><p>CSV 字段：姓名、学号、性别、班级、成绩、备注。导入会追加记录，导出包含当前查询结果。</p><span>青禾 · 让管理更轻松</span></div>
+    <div class="bottom-notes"><p>CSV 字段：姓名、学号、性别、班级、成绩、备注；相同学号会覆盖原记录，导出包含当前查询结果。</p><span>青禾 · 让管理更轻松</span></div>
   </main>
-  <dialog id="student-dialog" aria-labelledby="dialog-title"><form id="student-form" novalidate><div class="dialog-heading"><div><span class="eyebrow">STUDENT PROFILE</span><h2 id="dialog-title">新增学生</h2></div><button type="button" class="close-button" id="close-dialog" aria-label="关闭">×</button></div><div class="form-grid"><div class="form-field"><label for="student-name">姓名</label><input id="student-name" name="name" type="text" placeholder="请输入姓名"></div><div class="form-field"><label for="student-number">学号</label><input id="student-number" name="number" type="text" placeholder="请输入学号"></div><div class="form-field"><label for="student-gender">性别</label><select id="student-gender" name="gender"><option value="">未填写</option><option>男</option><option>女</option><option>其他</option></select></div><div class="form-field"><label for="student-class">班级</label><input id="student-class" name="className" type="text" placeholder="例如：高一（1）班"></div><div class="form-field full-width"><label for="student-score">成绩</label><input id="student-score" name="score" type="text" inputmode="decimal" placeholder="请输入成绩"></div><div class="form-field full-width"><label for="student-notes">备注</label><textarea id="student-notes" name="notes" rows="3" placeholder="填写学生相关备注"></textarea></div></div><div class="dialog-footer"><button type="button" id="cancel-dialog" class="button secondary">取消</button><button type="submit" id="save-student" class="button primary">保存学生</button></div></form></dialog>
+  <dialog id="student-dialog" aria-labelledby="dialog-title"><form id="student-form"><div class="dialog-heading"><div><span class="eyebrow">STUDENT PROFILE</span><h2 id="dialog-title">新增学生</h2></div><button type="button" class="close-button" id="close-dialog" aria-label="关闭">×</button></div><div class="form-grid"><div class="form-field"><label for="student-name">姓名 <span class="required">*</span></label><input id="student-name" name="name" type="text" placeholder="请输入姓名" required></div><div class="form-field"><label for="student-number">学号 <span class="required">*</span></label><input id="student-number" name="number" type="text" placeholder="请输入学号" required><span id="number-error" class="field-error"></span></div><div class="form-field"><label for="student-gender">性别</label><select id="student-gender" name="gender"><option value="">未填写</option><option>男</option><option>女</option><option>其他</option></select></div><div class="form-field"><label for="student-class">班级</label><input id="student-class" name="className" type="text" placeholder="例如：高一（1）班"></div><div class="form-field full-width"><label for="student-score">成绩</label><input id="student-score" name="score" type="number" min="0" max="100" step="0.1" placeholder="请输入 0—100 的成绩"></div><div class="form-field full-width"><label for="student-notes">备注</label><textarea id="student-notes" name="notes" rows="3" placeholder="填写学生相关备注"></textarea></div></div><div class="dialog-footer"><button type="button" id="cancel-dialog" class="button secondary">取消</button><button type="submit" class="button primary">保存</button></div></form></dialog>
   <dialog id="detail-dialog" aria-labelledby="detail-title"><div class="dialog-heading"><div><span class="eyebrow">STUDENT PROFILE</span><h2 id="detail-title">学生详情</h2></div><button type="button" class="close-button" id="close-detail" aria-label="关闭详情">×</button></div><dl id="student-detail" class="detail-grid"></dl><div class="dialog-footer"><button type="button" id="done-detail" class="button primary">关闭</button></div></dialog>
 </body>
 </html>
