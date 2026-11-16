@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>图书库存管理</title>
+<style>
+:root{font:15px/1.55 Inter,"Microsoft YaHei",sans-serif;color:#222b25;background:#f4f5ef}*{box-sizing:border-box}body{margin:0}header{background:#20372c;color:#fff;padding:16px max(24px,calc((100vw - 1160px)/2));white-space:nowrap;font-weight:650}main{max-width:1208px;margin:auto;padding:44px 24px}.heading,.toolbar,.actions,.filters{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.heading{justify-content:space-between;margin-bottom:20px}h1{font-size:32px;margin:0}h2{margin-top:0}.panel{background:white;border:1px solid #dbe1d8;border-radius:12px;overflow:hidden}.toolbar{justify-content:space-between;padding:18px}.filters input{width:220px}input,select,textarea,button{font:inherit;border:1px solid #ccd6cd;border-radius:6px;background:#fff;color:inherit;padding:8px 11px}button{cursor:pointer;font-weight:550}button:hover{background:#edf3ed}button:disabled{opacity:.45;cursor:default}.primary{background:#225b41;color:#fff;border-color:#225b41}.primary:hover{background:#194b34}.danger{color:#a02d26}.scroll{overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th,td{text-align:left;padding:12px;border-bottom:1px solid #e8ece7}th{background:#eef2eb}td button{padding:4px 8px;margin-right:5px}.empty{text-align:center;padding:65px 14px;color:#4f6155}.empty strong{display:block;color:#283c30;font-size:18px}footer{padding:12px 18px;color:#4f6155;border-top:1px solid #e8ece7}.hint{color:#4f6155;font-size:13px}dialog{width:min(550px,calc(100% - 28px));border:1px solid #ccd6cd;border-radius:12px;padding:24px}dialog::backdrop{background:#142b22aa}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.fields label{display:grid;gap:5px;min-width:0}.wide{grid-column:1/-1}.end{justify-content:flex-end;margin-top:20px}dl{display:grid;grid-template-columns:100px 1fr;gap:10px}dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}[hidden]{display:none!important}@media(max-width:560px){main{padding:25px 12px}h1{font-size:25px}.toolbar{padding:12px}.fields{grid-template-columns:1fr}}
+</style>
+<header>馆藏工作台</header>
+<main>
+<div class="heading"><h1>图书库存管理</h1><button type="button" class="primary" id="add">新增图书</button></div>
+<section class="panel" aria-label="图书列表">
+<div class="toolbar">
+<form class="filters" id="search"><input id="keyword" type="search" aria-label="书名或图书编号" placeholder="搜索书名或图书编号"><select id="category" aria-label="分类"><option value="">全部分类</option></select><button>查询</button><button type="button" id="reset">重置</button></form>
+<div class="actions"><input id="file" type="file" accept=".csv,text/csv" aria-label="选择 CSV 文件" hidden><button type="button" id="import">导入 CSV</button><button type="button" id="export">导出 CSV</button><button type="button" id="bulk" class="danger" disabled>批量删除</button></div>
+</div>
+<div class="scroll"><table><thead><tr><th><input id="all" type="checkbox" aria-label="全选当前结果" disabled></th><th>图书编号</th><th>书名</th><th>作者</th><th>分类</th><th>库存数量</th><th>操作</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="empty" id="empty"><strong id="empty-title">暂无图书</strong><span id="empty-tip">新增图书或导入 CSV 后，记录会显示在这里。</span></div>
+<footer id="count">共 0 条记录</footer>
+</section>
+<p class="hint">CSV 列名：图书编号、书名、作者、分类、库存数量、备注。导入追加记录，导出当前查询结果。刷新页面会清空记录。</p>
+</main>
+<dialog id="editor" aria-labelledby="editor-title"><h2 id="editor-title">新增图书</h2><form id="book" novalidate><div class="fields">
+<label>图书编号（必填）<input name="code" required></label><label>书名（必填）<input name="title" required></label><label>作者<input name="author"></label><label>分类<input name="category"></label><label>库存数量（必填）<input name="quantity" inputmode="numeric" required></label><label class="wide">备注<textarea name="note" rows="3"></textarea></label>
+</div><p id="form-error" class="danger" role="alert" hidden></p><div class="actions end"><button type="button" id="cancel">取消</button><button class="primary">保存</button></div></form></dialog>
+<dialog id="detail" aria-labelledby="detail-title"><h2 id="detail-title">图书详情</h2><dl id="details"></dl><div class="actions end"><button type="button" id="close-detail">关闭</button></div></dialog>
+<script>
+const columns = ['图书编号','书名','作者','分类','库存数量','备注'];
+const fields = ['code','title','author','category','quantity','note'];
+const $ = id => document.getElementById(id);
+const selected = new Set();
+let records = [], nextId = 1, editing = null;
+function parseCsv(text) {
+  const rows = [];
+  const pattern = /"(?:[^"]|"")*"|[^,\r\n]+|,|\r\n|\r|\n/g;
+  let row = [], value = '';
+  for (const token of text.replace(/^\uFEFF/, '').match(pattern) || []) {
+    if (token === ',') { row.push(value); value = ''; }
+    else if (/^[\r\n]/.test(token)) { rows.push([...row, value]); row = []; value = ''; }
+    else value += token.startsWith('"') && token.endsWith('"') ? token.slice(1,-1).replaceAll('""','"') : token;
+  }
+  rows.push([...row, value]);
+  return rows.filter(cells => cells.some(Boolean));
+}
+function csvRecords(text) {
+  const rows = parseCsv(text);
+  if (!rows.length) return [];
+  const header = rows[0].map(value => value.trim());
+  const named = columns.some(column => header.includes(column));
+  return rows.slice(named ? 1 : 0).map(row => fields.map((_, index) => row[named ? header.indexOf(columns[index]) : index] ?? ''));
+}
+function csvExport(rows) {
+  return '\uFEFF' + [columns, ...rows].map(row => row.map(value => '"' + value.replaceAll('"','""') + '"').join(',')).join('\r\n');
+}
+function visible() {
+  const keyword = $('keyword').value.trim().toLowerCase();
+  const category = $('category').value;
+  return records.filter(({values}) => (!category || values[3] === category) && [values[0],values[1]].some(value => value.toLowerCase().includes(keyword)));
+}
+function button(label, action, danger = false) {
+  const element = document.createElement('button');
+  element.type = 'button';
+  element.textContent = label;
+  if (danger) element.className = 'danger';
+  element.addEventListener('click', action);
+  return element;
+}
+function deleteRecords(ids) {
+  records = records.filter(record => !ids.has(record.id));
+  selected.clear();
+  render();
+}
+function render() {
+  const category = $('category').value;
+  const categories = [...new Set(records.map(record => record.values[3]).filter(Boolean))].sort();
+  $('category').replaceChildren(new Option('全部分类',''), ...categories.map(value => new Option(value,value)));
+  $('category').value = categories.includes(category) ? category : '';
+  const list = visible();
+  const tbody = $('rows');
+  tbody.replaceChildren();
+  for (const record of list) {
+    const row = tbody.insertRow();
+    const check = document.createElement('input');
+    check.type = 'checkbox';
+    check.setAttribute('aria-label','选择图书 ' + (record.values[1] || record.values[0] || record.id));
+    check.checked = selected.has(record.id);
+    check.onchange = () => { if (check.checked) selected.add(record.id); else selected.delete(record.id); updateSelection(); };
+    row.insertCell().append(check);
+    for (const value of record.values.slice(0,5)) row.insertCell().textContent = value || '—';
+    row.insertCell().append(button('查看', () => showDetail(record)), button('编辑', () => edit(record)), button('删除', () => deleteRecords(new Set([record.id])), true));
+  }
+  $('empty').hidden = list.length > 0;
+  $('empty-title').textContent = records.length ? '未找到匹配图书' : '暂无图书';
+  $('empty-tip').textContent = records.length ? '调整查询条件或重置筛选。' : '新增图书或导入 CSV 后，记录会显示在这里。';
+  updateSelection();
+}
+function updateSelection() {
+  const list = visible();
+  const count = list.filter(record => selected.has(record.id)).length;
+  $('all').disabled = !list.length;
+  $('all').checked = count > 0 && count === list.length;
+  $('all').indeterminate = count > 0 && count < list.length;
+  $('bulk').disabled = !count;
+  $('count').textContent = '显示 ' + list.length + ' 条，共 ' + records.length + ' 条' + (count ? ' · 已选 ' + count + ' 条' : '');
+}
+function edit(record) {
+  editing = record ?? null;
+  $('form-error').hidden = true;
+  $('editor-title').textContent = record ? '编辑图书' : '新增图书';
+  fields.forEach((field,index) => { $('book').elements.namedItem(field).value = record?.values[index] ?? ''; });
+  $('editor').showModal();
+}
+function showDetail(record) {
+  $('details').replaceChildren();
+  columns.forEach((column,index) => {
+    const label = document.createElement('dt');
+    const value = document.createElement('dd');
+    label.textContent = column;
+    value.textContent = record.values[index] || '—';
+    $('details').append(label,value);
+  });
+  $('detail').showModal();
+}
+function refilter() { selected.clear(); render(); }
+$('add').onclick = () => edit();
+$('cancel').onclick = () => $('editor').close();
+$('close-detail').onclick = () => $('detail').close();
+function validateBook(values, codes) {
+  for (const index of [0, 1, 4]) {
+    if (!values[index].trim()) return { index, message: columns[index] + '为必填项。' };
+  }
+  if (codes.has(values[0].trim())) return { index: 0, message: '图书编号已存在，请使用其他编号。' };
+  return null;
+}
+$('book').onsubmit = event => {
+  event.preventDefault();
+  const values = fields.map(field => $('book').elements.namedItem(field).value);
+  values[0] = values[0].trim();
+  const codes = new Set(records.filter(record => record !== editing).map(record => record.values[0]));
+  const error = validateBook(values, codes);
+  if (error) {
+    $('form-error').textContent = error.message;
+    $('form-error').hidden = false;
+    $('book').elements.namedItem(fields[error.index]).focus();
+    return;
+  }
+  if (editing) editing.values = values;
+  else records.push({id: nextId++, values});
+  $('editor').close();
+  render();
+};
+$('search').onsubmit = event => { event.preventDefault(); refilter(); };
+$('keyword').oninput = refilter;
+$('category').onchange = refilter;
+$('reset').onclick = () => { $('keyword').value = ''; $('category').value = ''; refilter(); };
+$('all').onchange = event => {
+  for (const {id} of visible()) {
+    if (event.target.checked) selected.add(id);
+    else selected.delete(id);
+  }
+  render();
+};
+$('bulk').onclick = () => deleteRecords(new Set(visible().filter(record => selected.has(record.id)).map(record => record.id)));
+$('import').onclick = () => $('file').click();
+$('file').onchange = async event => {
+  const file = event.target.files[0];
+  if (!file) return;
+  try {
+    const batch = csvRecords(await file.text());
+    const codes = new Set(records.map(record => record.values[0]));
+    for (const [index, values] of batch.entries()) {
+      values[0] = values[0].trim();
+      const error = validateBook(values, codes);
+      if (error) {
+        alert('导入失败：第 ' + (index + 1) + ' 条数据，' + error.message);
+        return;
+      }
+      codes.add(values[0]);
+    }
+    for (const values of batch) records.push({id: nextId++, values});
+    render();
+  } finally { event.target.value = ''; }
+};
+$('export').onclick = () => {
+  const url = URL.createObjectURL(new Blob([csvExport(visible().map(record => record.values))], {type:'text/csv;charset=utf-8'}));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = '图书库存.csv';
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+render();
+</script>
+</html>
